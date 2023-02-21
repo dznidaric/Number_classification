@@ -5,45 +5,41 @@ function ClassificationPage() {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-      const isLoggedIn = sessionStorage.getItem("isLoggedIn") || localStorage.getItem("isLoggedIn");
-      if (!isLoggedIn) navigate('/login', { replace: true });
-    }, []);
-
-
+    const [classifiedNumber, setClassifiedNumber] = useState<number>();
 
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        
+
     }
 
     const handleSignOut = () => {
-        sessionStorage.clear();
+        localStorage.clear();
+        navigate('/login', { replace: true });
     }
 
 
     return (
-        <form onSubmit={handleSubmit}>
-           <div style={{"float": "right"}}>
-                <button type="button" onClick={handleSignOut}>Sign Out</button>
-           </div>
-            <div>
-                <label htmlFor="image">Image:</label>
-                <input
-                    type="text"
-                    id="image"
-                    value={""}
-                    onChange={handleImageChange}
-                    required
-                />
+        <>
+            <h2 style={{ "textAlign": "center" }}>Number Classification App</h2>
+            <div style={{ "float": "right" }}>
+                <button type="button" className="button-form" onClick={handleSignOut}>Sign Out</button>
             </div>
-            <div>
-                <button type="submit">Choose</button>
-            </div>
-        </form>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label htmlFor="image">Choose an image:</label>
+
+                </div>
+                <div>
+                    <h4>{classifiedNumber}</h4>
+                </div>
+                <div>
+                    <button type="submit" className="button-form">Choose</button>
+                </div>
+            </form>
+        </>
     );
 };
 

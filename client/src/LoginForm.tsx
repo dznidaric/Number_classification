@@ -8,6 +8,7 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -21,58 +22,78 @@ function LoginForm() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const authData = await pb.collection('users').authWithPassword(email, password);
-    console.log(authData)
-    if (authData) {
-      if (authData.record.verified) {
-        sessionStorage.setItem("isLoggedIn", "true");
-        setMessage("Login successful");
-        toast("Login successful");
-        navigate('/', { replace: true });
+
+    try {
+      const authData = await pb.collection('users').authWithPassword(email, password);
+      console.log(authData)
+      if (authData?.record) {
+        if (authData?.record?.verified) {
+          localStorage.setItem("isLoggedIn", "true");
+          console.log(localStorage.getItem("isLoggedIn"));
+          navigate('/', { replace: true });
+          toast.success("Login successful");
+        }
+        else {
+          toast.error("Please verify your email address")
+        }
       }
       else {
-        toast("Please verify your email address");
+        console.log("Login failed");
+        toast.error(authData?.meta?.message || "Login failed");
       }
     }
-    else {
-      console.log("Login failed");
-      toast("Login failed");
-    };
+    catch (e: any) {
+      console.log(e);
+      setError(e?.message);
+      toast.error(e?.message || "Login failed", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={handleEmailChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-          required
-        />
-      </div>
-      <div>
-        <a href="#">Forgot password?</a>
-      </div>
-      <div>
-        <button type="submit">Login</button>
-      </div>
-      <div>
-        <button type="button" onClick={() => navigate('/register', { replace: true })}>Register</button>
-      </div>
-      <ToastContainer />
-    </form>
+    <>
+      <h2 style={{ "textAlign": "center" }}>Login</h2>
+      <form onSubmit={handleSubmit} >
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={handleEmailChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={handlePasswordChange}
+            required
+          />
+        </div>
+        <div>
+          <a href="#">Forgot password?</a>
+        </div>
+        <div>
+          <button type="submit" className="button-form">Login</button>
+        </div>
+        <div>
+          <p>Don't have an account?</p>
+          <button type="button" onClick={() => navigate('/register', { replace: true })}>Register</button>
+        </div>
+        <ToastContainer />
+      </form>
+    </>
   );
 }
 
