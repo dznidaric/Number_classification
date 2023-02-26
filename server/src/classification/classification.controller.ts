@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Header, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ClassificationService } from './classification.service';
 
@@ -11,10 +11,12 @@ export class ClassificationController {
     return this.classificationService.getRandomImages();
   }
 
+  @Header('Access-Control-Allow-Origin', '*')
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async classifyImage(@UploadedFile() image: Express.Multer.File) {
-    const classId = await this.classificationService.classifyImage(image.buffer);
-    return { classId };
+    const classifiedNumber = await this.classificationService.classifyImage(image.buffer);
+    return classifiedNumber;
   }
+
 }

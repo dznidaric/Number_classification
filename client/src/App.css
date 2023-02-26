@@ -72,3 +72,7 @@ form div {
   -webkit-user-select: none;
   width: 100%;
 }
+
+img {
+  cursor: pointer;
+}

@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import ClassificationPage from './ClassificationPage';
-import LoginForm from './LoginForm';
-import RegistrationForm from './RegistrationForm';
+import LoginForm from './forms/LoginForm';
+import RegistrationForm from './forms/RegistrationForm';
 
 function App() {
 
