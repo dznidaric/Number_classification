@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import classificationService from "./services/classificationService";
 
 function ClassificationPage() {
@@ -12,9 +13,16 @@ function ClassificationPage() {
     }
 
     const images: ImageProps[] = [
-        { name: "Number 0", src: require(".//lib/images/0.png") },
-        { name: "Number 4", src: require(".//lib/images/4.png") },
-        { name: "Number 5", src: require(".//lib/images/5.png") },
+        { name: "Number 0", src: require(".//lib/images/img_0.jpg") },
+        { name: "Number 1", src: require(".//lib/images/img_1.jpg") },
+        { name: "Number 2", src: require(".//lib/images/img_2.jpg") },
+        { name: "Number 3", src: require(".//lib/images/img_3.jpg") },
+        { name: "Number 4", src: require(".//lib/images/img_4.jpg") },
+        { name: "Number 5", src: require(".//lib/images/img_5.jpg") },
+        { name: "Number 6", src: require(".//lib/images/img_6.jpg") },
+        { name: "Number 7", src: require(".//lib/images/img_7.jpg") },
+        { name: "Number 8", src: require(".//lib/images/img_8.jpg") },
+        { name: "Number 9", src: require(".//lib/images/img_9.jpg") },
     ];
 
     const [selectedImage, setSelectedImage] = useState<ImageProps | null>(null);
@@ -38,6 +46,7 @@ function ClassificationPage() {
         classificationService.uploadImage(formData).then((data) => {
             console.log("Image uploaded successfully", data);
             setClassifiedNumber(data);
+            toast.success("Classified number successfully");
         }).catch((error) => {
             console.error("Error uploading image", error);
         });
@@ -63,10 +72,12 @@ function ClassificationPage() {
                 <div>
                     {images.map((image) => (
                         <img
+                            height={124}
+                            width={124}
                             key={image.src}
                             src={image.src}
                             alt={image.name}
-                            style={{ border: selectedImage === image ? "2px solid blue" : "" }}
+                            style={{ "border": selectedImage === image ? "2px solid blue" : "", "padding": "5px" }}
                             onClick={() => handleImageClick(image)}
                         />
                     ))}
@@ -79,6 +90,7 @@ function ClassificationPage() {
                     <h4>{classifiedNumber}</h4>
                 </div>}
             </form>
+            <ToastContainer />
         </>
     );
 };

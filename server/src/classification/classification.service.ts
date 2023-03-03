@@ -4,7 +4,7 @@ import { Tensor3D } from '@tensorflow/tfjs-node';
 import { PythonShell } from 'python-shell';
 import { MnistData } from 'src/data';
 
-const modelPath = '../number_classification_model';
+const modelPath = './number_classification_model';
 @Injectable()
 export class ClassificationService {
   private model: tf.LayersModel;

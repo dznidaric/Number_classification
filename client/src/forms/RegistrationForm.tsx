@@ -43,7 +43,7 @@ function RegistrationForm() {
       await sendEmailVerification();
     } catch (e: any) {
       console.log(e);
-      toast.error(e?.data?.data?.email?.message || e?.message || "Registration failed");
+      toast.error(e?.data?.data?.email?.message || e?.data?.data?.password?.message || e?.message || "Registration failed");
     }
   }
 
